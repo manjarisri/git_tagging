@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'github.com/manjarisri/giit_tagging.git'
+        GIT_URL = 'https://github.com/manjarisri/giit_tagging.git'
         GIT_USERNAME = 'manjarisri'
         GIT_PASSWORD = '#Nanami0307'
     }    
@@ -40,7 +40,7 @@ pipeline {
                     sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
 
                     // Push the tag to the remote repository using withCredentials
-                    sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_URL} --tags"
+                    sh "git push ${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_URL} --tags"
 
                     }
          }
