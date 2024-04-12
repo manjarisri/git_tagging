@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'https://github.com/your/repository.git'
-        GIT_CREDENTIALS = 'your-git-credentials-id'
+        GIT_URL = 'https://github.com/manjarisri/giit_tagging.git'
+        GIT_CREDENTIALS = 'github'
     }
 
     stages {
