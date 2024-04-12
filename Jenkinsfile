@@ -29,12 +29,12 @@ pipeline {
         }
 
           stage('Handle Webhook') {
+              when{
+                  expression {return params.current_status == "closed" && params.merged == true && params.branch == "main"}
+}
             steps {
                 script {
-                 when {
-                 // Run the pipeline only when the pull request is merged
-                        changeRequest target: 'main', condition: 'merged'
-                 }
+                 
                     // Extract event type and branch from the GitHub payload
                     def eventType = env.CHANGE_EVENT
                     def branch = env.CHANGE_BRANCH
