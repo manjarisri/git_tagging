@@ -32,8 +32,8 @@ pipeline {
                 echo "Generating and pushing tag for branch: ${env.BRANCH_NAME}"
                 script {
                     // Set Git user
-                    sh 'git config --global user.email "your-email@example.com"'
-                    sh 'git config --global user.name "Your Name"'
+                    sh 'git config --global user.email "manjari.srivastav@nashtechglobal.com"'
+                    sh 'git config --global user.name "manjarisri"'
 
                     // Generate tag name
                     def tagName = "${env.BRANCH_NAME.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
