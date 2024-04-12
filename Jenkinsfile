@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-         stage('Handle Webhook') {
+          stage('Handle Webhook') {
             steps {
                 script {
                     // Extract event type and branch from the GitHub payload
@@ -42,21 +42,16 @@ pipeline {
                         echo "Generating and pushing tag for branch: ${branch}"
                         def tagName = "${branch.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
-                        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
-                            def repoUrl = "${env.GIT_URL}".replace("https://", "")
-                            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repoUrl} --tags"
-                        }
+                        sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_URL} --tags"
                     } else {
                         echo "Webhook received, but not for a merge into the main branch. Skipping tag generation."
                     }
-                
-         
                 }
             }
     }  
 }
 
-
+}
     
 
 }
