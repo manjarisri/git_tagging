@@ -31,7 +31,7 @@ pipeline {
          stage('Tag') {
             steps {
                 echo "Generating and pushing tag for branch: ${env.BRANCH_NAME}"
-                // script {
+                script {
 
                     // Generate tag name
                     def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
@@ -47,5 +47,5 @@ pipeline {
                 }
             }
         
-
+}
 
