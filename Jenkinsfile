@@ -32,22 +32,27 @@ pipeline {
             steps {
                 echo "Generating and pushing tag for branch: ${env.BRANCH_NAME}"
                 script {
+                    // Extract event type and branch from the GitHub payload
+                    def eventType = env.CHANGE_EVENT
+                    def branch = env.CHANGE_BRANCH
 
-                    // Generate tag name
-                    def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
+                    if (eventType == 'pull_request' && branch == 'dev') {
+                        echo "Webhook received for a merge into the dev branch. Proceeding with tag generation."
 
-                    // Tag the commit
-                    sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
-
-                    // Push the tag to the remote repository using withCredentials
-                    def repoUrl = "$GIT_URL"
-                    repo = repoUrl.replace("https://", "")
-                    sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@$repo --tags"
-
+                        // Generate and push tag
+                        echo "Generating and pushing tag for branch: ${branch}"
+                        def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
+                        sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
+                        def repoUrl = "${env.GIT_URL}".replace("https://", "")
+                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repoUrl} --tags"
+                        
+                    } else {
+                        echo "Webhook received, but not for a merge into the dev branch. Skipping tag generation."
                     }
-         }
+                }
+         
                 }
             }
-        
+    }  
 }
 
