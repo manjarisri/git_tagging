@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'https://github.com/manjarisri/giit_tagging.git'
+        GIT_URL = 'github.com/manjarisri/giit_tagging.git'
         GIT_USERNAME = 'manjarisri'
         GIT_PASSWORD = '#Nanami0307'
     }    
