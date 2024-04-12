@@ -29,10 +29,6 @@ pipeline {
         }
 
          stage('Handle Webhook') {
-            when {
-                // Trigger only for GitHub webhook events
-                expression { env.CHANGE_SOURCE == 'GitHub' }
-            }
             steps {
                 script {
                     // Extract event type and branch from the GitHub payload
