@@ -43,8 +43,9 @@ pipeline {
                         echo "Generating and pushing tag for branch: ${branch}"
                         def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
-                        def repoUrl = "${env.GIT_URL}".replace("https://", "")
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repoUrl} --tags"
+                        def repoUrl = ${GIT_URL}
+                        repo = repoUrl.replace("https://", "")
+                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repo} --tags"
                         
                     } else {
                         echo "Webhook received, but not for a merge into the dev branch. Skipping tag generation."
