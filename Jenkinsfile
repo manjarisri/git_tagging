@@ -41,11 +41,9 @@ pipeline {
                     // Tag the commit
                     sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
 
-                    // Push the tag to the remote repository
+                    // Push the tag to the remote repository using withCredentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
-                        // Extract the repository URL
-                        def repoUrl = "${env.GIT_URL}".replace("https://", "")
-                        sh "git push https://${git_username}:${git_password}@${repoUrl} --tags"
+                        sh "git push https://${git_username}:${git_password}@${env.GIT_URL} --tags"
                     }
                 }
             }
