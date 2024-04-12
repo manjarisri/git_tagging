@@ -28,33 +28,36 @@ pipeline {
             }
         }
 
-         stage('Tag') {
+         stage('Handle Webhook') {
+            when {
+                // Trigger only for GitHub webhook events
+                expression { env.CHANGE_SOURCE == 'GitHub' }
+            }
             steps {
-                echo "Generating and pushing tag for branch: ${env.BRANCH_NAME}"
                 script {
                     // Extract event type and branch from the GitHub payload
                     def eventType = env.CHANGE_EVENT
                     def branch = env.CHANGE_BRANCH
 
-                    if (eventType == 'pull_request' && branch == 'dev') {
-                        echo "Webhook received for a merge into the dev branch. Proceeding with tag generation."
+                    if (eventType == 'pull_request' && branch == 'main') {
+                        echo "Webhook received for a merge into the main branch. Proceeding with tag generation."
 
                         // Generate and push tag
                         echo "Generating and pushing tag for branch: ${branch}"
-                        def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
+                        def tagName = "${branch.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
-                        def repoUrl = ${GIT_URL}
-                        repo = repoUrl.replace("https://", "")
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repo} --tags"
-                        
+                        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+                            def repoUrl = "${env.GIT_URL}".replace("https://", "")
+                            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repoUrl} --tags"
+                        }
                     } else {
-                        echo "Webhook received, but not for a merge into the dev branch. Skipping tag generation."
+                        echo "Webhook received, but not for a merge into the main branch. Skipping tag generation."
                     }
-                }
+                
          
                 }
             }
     }  
 }
 
-
+}
