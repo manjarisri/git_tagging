@@ -29,12 +29,12 @@ pipeline {
         }
 
           stage('Handle Webhook') {
-              when{
-                  expression {return params.current_status == "closed" && params.merged == true && params.branch == "main"}
-}
+  
             steps {
                 script {
-                 
+                    when{
+                     expression {return params.current_status == "closed" && params.merged == true && params.branch == "main"}
+}
                     // Extract event type and branch from the GitHub payload
                     def eventType = env.CHANGE_EVENT
                     def branch = env.CHANGE_BRANCH
