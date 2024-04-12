@@ -31,10 +31,13 @@ pipeline {
           stage('Handle Webhook') {
             steps {
                 script {
+                    script {
                     // Extract event type and branch from the GitHub payload
                     def eventType = env.CHANGE_EVENT
                     def branch = env.CHANGE_BRANCH
 
+                    echo "Event Type: ${eventType}"
+                    echo "Branch: ${branch}"
                     if (eventType == 'pull_request' && branch == 'main') {
                         echo "Webhook received for a merge into the main branch. Proceeding with tag generation."
 
