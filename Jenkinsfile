@@ -29,7 +29,7 @@ pipeline {
         }
 
          stages {
-        stage('Detect Merge and Push Tag') {
+          stage('Detect Merge and Push Tag') {
             steps {
                 script {
                     // Check if a merge to the target branch has occurred
