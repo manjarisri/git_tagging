@@ -28,34 +28,30 @@ pipeline {
             }
         }
 
-          stage('Handle Webhook') {
-//                   when{
-//                      expression {return params.current_status == "closed" && params.merged == true && params.branch == "main"}
-// }
+         stages {
+        stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    // Extract event type and branch from the GitHub payload
-                    def eventType = env.CHANGE_EVENT
-                    def branch = env.CHANGE_BRANCH
+                    // Check if a merge to the target branch has occurred
+                    def isMerge = sh(script: 'git log --merges -1 --pretty=%B', returnStdout: true).trim().contains('Merge pull request')
 
-                    echo "Event Type: ${eventType}"
-                    echo "Branch: ${branch}"
-                    if (eventType == 'pull_request' && branch == 'main') {
-                        echo "Webhook received for a merge into the main branch. Proceeding with tag generation."
-
+                    if (isMerge) {
                         // Generate and push tag
-                        echo "Generating and pushing tag for branch: ${branch}"
+                        echo "Generating and pushing tag"
+                        def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                         def tagName = "${branch.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
                         sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_URL} --tags"
                     } else {
-                        echo "Webhook received, but not for a merge into the main branch. Skipping tag generation."
+                        echo "No merge detected, skipping tag generation and push"
                     }
                 }
             }
+        }
+    }
     }  
 }
     
-}
+
     
 
