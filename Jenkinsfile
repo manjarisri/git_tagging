@@ -39,7 +39,8 @@ pipeline {
                         def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                         def tagName = "${branch.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
-                        sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_URL} --tags"
+                        repo = GIT_URL.replace("https://", "")
+                        sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${repo} --tags"
                     } else {
                         echo "No merge detected, skipping tag generation and push"
                     }
