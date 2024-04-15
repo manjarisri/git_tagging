@@ -37,7 +37,7 @@ pipeline {
                         // Generate and push tag
                         echo "Generating and pushing tag"
                         // def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-                        def tagName = "${env.BRANCH_NAME.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
+                        def tagName = "${env.BRANCH_NAME}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
                         repo = GIT_URL.replace("https://", "")
                         sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${repo} --tags"
