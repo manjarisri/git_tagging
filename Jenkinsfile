@@ -36,7 +36,7 @@ pipeline {
                     if (isMerge) {
                         // Generate and push tag
                         echo "Generating and pushing tag"
-                        def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                        // def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                         def tagName = "${branch.toUpperCase()}-0.0.${env.BUILD_NUMBER}"
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
                         repo = GIT_URL.replace("https://", "")
