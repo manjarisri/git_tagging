@@ -35,7 +35,7 @@ pipeline {
                     if (isMerge) {
                         // Generate and push tag
                         echo "Generating and pushing tag"
-                        def tagName = "${env.BRANCH_NAME}-0.0.${env.BUILD_NUMBER}"
+                        def tagName = "DEV-0.0.${env.BUILD_NUMBER}"
                         def repo = GIT_URL.replace("https://", "")
                         sh "git tag -a ${tagName} -m 'Auto-generated tag ${tagName}'"
                         sh "git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${repo} --tags"
