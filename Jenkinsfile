@@ -34,6 +34,7 @@ pipeline {
                     // Check if a merge to the target branch has occurred
                     // def isMerge = sh(script: 'git log --merges -1 --pretty=%B', returnStdout: true).trim().contains('Merge pull request')
                     echo "${REPO_NAME}_${BRANCH_NAME}"
+                    echo "${workspace}"
                     
                 }
             }
