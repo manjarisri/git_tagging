@@ -30,7 +30,7 @@ pipeline {
         stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    def mysqlStatus = sh(script: "bash /home/knoldus/check_env/bashsync.sh", returnStatus: true)== 0 ? 'running' : 'not running'                    
+                    def mysqlStatus = sh(script: "bash /home/knoldus/check_env/bashsyn.sh", returnStatus: true)== 0 ? 'running' : 'not running'                    
                 }
             }
         }
