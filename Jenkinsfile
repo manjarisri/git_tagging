@@ -5,8 +5,7 @@ pipeline {
         GIT_URL = 'https://github.com/manjarisri/git_tagging.git'
         GIT_USERNAME = 'manjarisri'
         GIT_PASSWORD = '#Nanami0307'
-        REPO_NAME = "${env.JOB_NAME.split('/')[0]}"  // Extract the repo name from the JOB_NAME
-        BRANCH_NAME = "${env.JOB_NAME.split('/')[1]}"  // Extract the branch name from the JOB_NAME
+        MYSQL_STATUS = ''
     }    
 
     stages {
@@ -31,13 +30,14 @@ pipeline {
         stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    // Check if a merge to the target branch has occurred
-                    // def isMerge = sh(script: 'git log --merges -1 --pretty=%B', returnStdout: true).trim().contains('Merge pull request')
-                    echo "${REPO_NAME}_${BRANCH_NAME}"
-                    echo "${workspace}"
-                    
+                    def mysqlStatus = sh(script: "bash /home/knoldus/check_env/bashsync.sh", returnStatus: true)== 0 ? 'running' : 'not running'                    
                 }
             }
+        }
+    }
+    post {
+        always {
+            echo "MySQL is ${env.MYSQL_STATUS} on ${params.DEV_SERVER}."
         }
     }
 }
