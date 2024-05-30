@@ -9,28 +9,10 @@ pipeline {
     }    
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'echo "Building..."'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'echo "Testing..."'
-            }
-        }
-
         stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    def mysqlStatus = sh(script: "bash /home/knoldus/check_env/bashsyn.sh", returnStatus: true)== 0 ? 'running' : 'not running'                    
+                    env.MYSQL_STATUS = sh(script: "/bin/bash /home/knoldus/check_mysql.sh'", returnStatus: true) == 0 ? 'running' : 'not running'
                 }
             }
         }
