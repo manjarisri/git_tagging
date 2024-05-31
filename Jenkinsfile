@@ -12,7 +12,7 @@ pipeline {
         stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    env.MYSQL_STATUS = sh(script: "chmod +x /home/knoldus/check_env/bashsyn.sh &&  ./home/knoldus/check_env/bashsyn.sh", returnStatus: true) == 0 ? 'running' : 'not running'
+                    env.MYSQL_STATUS = sh(script: "./home/knoldus/check_env/bashsyn.sh", returnStatus: true) == 0 ? 'running' : 'not running'
                 }
             }
         }
