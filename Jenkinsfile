@@ -14,6 +14,7 @@ pipeline {
                 script {
                   withCredentials([usernamePassword(credentialsId: 'aws-ssh', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     env.MYSQL_STATUS = sh(script: "./home/knoldus/check_env/bashsyn.sh", returnStatus: true) == 0 ? 'running' : 'not running'
+                    echo "Username: ${env.USERNAME}"
                 }
                 }
             }
