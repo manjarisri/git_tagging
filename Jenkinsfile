@@ -15,7 +15,7 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'aws-ssh', keyFileVariable: 'SSH_KEY')]) {
                         env.MYSQL_STATUS = sh(script: """
                         ls -l
-                        bash /home/ubuntu/script.sh"
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no 'bash /home/ubuntu/script.sh'
                         """, returnStatus: true) == 0 ? 'running' : 'not running'
                         echo "Using SSH Key for authentication"
                     }
