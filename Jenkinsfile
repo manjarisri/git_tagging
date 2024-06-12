@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    parameters{
+    parameters {
         extendedChoice(
             name: 'SERVICES_TO_SCALE',
             type: 'PT_CHECKBOX',
@@ -16,24 +16,24 @@ pipeline {
         GIT_USERNAME = 'manjarisri'
         GIT_PASSWORD = '#Nanami0307'
         // KUBECONFIG = credentials('minikube')
-    }    
+    }
 
     stages {
-        stage('deploy to k8s'){
-	  dir("${workspace}/git_tagging/kube/"){
+        stage('Deploy to k8s') {
+            steps {
+                dir("${workspace}/git_tagging/kube/") {
                     ansiblePlaybook(
                         playbook: './playbook.yaml',
                         inventory: './host/inventory',
                         credentialsId: 'KUBECONFIG',
                         extras: '-vvv',
                         extraVars: [
-                           namespace : "${params.NAMESPACE}",
-                           name : "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
+                            namespace: "${params.NAMESPACE}",
+                            name: "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
                         ]
-                          
                     )
                 }
-            }    
-       }
-    
+            }
+        }
+    }
 }
