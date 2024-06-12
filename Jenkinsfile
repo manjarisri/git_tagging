@@ -1,7 +1,13 @@
 pipeline {
     agent any
     parameters{
-     choice(name: 'service name', choices: ['nike', 'router', 'auth', 'authzn'], description: 'choose a service to scale')
+        extendedChoice(
+            name: 'SERVICES_TO_SCALE',
+            type: 'PT_CHECKBOX',
+            description: 'Select the services to scale',
+            multiSelectDelimiter: ',',
+            value: 'service1,service2,service3,service4,service5,service6,service7,service8,service9,service10,service11,service12'
+        )    
     }
 
     environment {
