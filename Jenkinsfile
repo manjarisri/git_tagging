@@ -20,7 +20,7 @@ pipeline {
 
     stages {
         stage('deploy to k8s'){
-	      steps {
+	  dir("${workspace}/git_tagging/kube/"){
                     ansiblePlaybook(
                         playbook: './playbook.yaml',
                         inventory: './host/inventory',
