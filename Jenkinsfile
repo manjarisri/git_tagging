@@ -27,7 +27,7 @@ pipeline {
                         credentialsId: 'KUBECONFIG',
                         extras: '-vvv'
                         extraVars: [
-                           namespace : "${params.NAMESPACE}"
+                           namespace : "${params.NAMESPACE}",
                            name : "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
                         ]
                           
