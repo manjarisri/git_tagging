@@ -25,7 +25,7 @@ pipeline {
                         playbook: './playbook.yaml',
                         inventory: './host/inventory',
                         credentialsId: 'KUBECONFIG',
-                        extras: '-vvv'
+                        extras: '-vvv',
                         extraVars: [
                            namespace : "${params.NAMESPACE}",
                            name : "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
