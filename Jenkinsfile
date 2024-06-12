@@ -29,7 +29,7 @@ pipeline {
                         extras: '-vvv',
                         extraVars: [
                             namespace: "${params.NAMESPACE}",
-                            SERVICES_TO_SCALE: "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
+                            services_to_scale: "${params.SERVICES_TO_SCALE.split(',').collect { it.trim() }}"
                         ]
                     )
                 }
