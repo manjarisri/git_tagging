@@ -5,7 +5,8 @@
         name: "{{ item }}"
         namespace: "{{ namespace }}"
         replicas: 0
-  loop: "{{ services_to_scale }}"
+  loop: "{{ services_to_scale.split(',') }}"
+  when: services_to_scale | length > 0
 
 - name: Scale up
   k8s_scale:
@@ -13,4 +14,5 @@
         name: "{{ item }}"
         namespace: "{{ namespace }}"
         replicas: 1
-  loop: "{{ services_to_scale }}"
+  loop: "{{ services_to_scale.split(',') }}"
+  when: services_to_scale | length > 0
