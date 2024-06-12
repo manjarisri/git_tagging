@@ -15,17 +15,15 @@ pipeline {
         stage('Detect Merge and Push Tag') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'aws-ssh', keyFileVariable: 'SSH_KEY')]) {
                         env.MYSQL_STATUS = sh(script: """
                         ls -l
-                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no 'bash /home/ubuntu/script.sh'
+                        'bash /home/ubuntu/script.sh'
                         """, returnStatus: true) == 0 ? 'running' : 'not running'
                         echo "Using SSH Key for authentication"
                     }
                 }
             }
         }
-    }
     post {
         always {
             echo "MySQL is ${env.MYSQL_STATUS} on ${params.DEV_SERVER}."
