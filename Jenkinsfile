@@ -24,7 +24,7 @@ pipeline {
                 dir("${workspace}/kube") {
                     ansiblePlaybook(
                         playbook: './playbook.yaml',
-                        inventory: './host/inventory',
+                        inventory: './hosts/inventory',
                         credentialsId: 'KUBECONFIG',
                         extras: '-vvv',
                         extraVars: [
