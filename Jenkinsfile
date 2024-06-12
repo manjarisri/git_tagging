@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters{
+     choice(name: 'service name', choices: ['nike', 'router', 'auth', 'authzn'], description: 'choose a service to scale')
+    }
 
     environment {
         GIT_URL = 'https://github.com/manjarisri/git_tagging.git'
