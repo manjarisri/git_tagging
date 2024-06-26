@@ -1,6 +1,6 @@
 ---
 - name: Check and start services
-  hosts: all
+  hosts: localhost
   become: yes
   gather_facts: false
   roles:
