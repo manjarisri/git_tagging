@@ -2,7 +2,7 @@
 - name: Scale down
   k8s_scale:
         kind: "Deployment"
-        name: "{{ item }}"
+        name: "{{ item | trim | regex_replace('^\\[|\\]$', '') }}"
         namespace: "{{ namespace }}"
         replicas: 0
   loop: "{{ services_to_scale.split(',') }}"
