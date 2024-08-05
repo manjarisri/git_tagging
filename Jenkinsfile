@@ -1,13 +1,28 @@
 pipeline {
     agent any
     parameters {
-        extendedChoice(
-            name: 'SERVICES_TO_SCALE',
-            type: 'PT_CHECKBOX',
-            description: 'Select the services to scale',
-            multiSelectDelimiter: ',',
-            value: 'my-dep,nginx-deployment'
-        )
+        choice(name: 'ENVIRONMENT', choices: ['dev7', 'dev9', 'test1'], description: 'Select the environment')
+
+        // Add a dynamic parameter for deployments based on the selected environment
+        activeChoiceReactiveParam('SERVICES_TO_SCALE') {
+            description('Select the services to scale')
+            choiceType('CHECKBOX')
+            groovyScript {
+                script("""
+                    switch (params.ENVIRONMENT) {
+                        case 'dev7':
+                            return ['dev7-nike-email', 'dev7-nike-web']
+                        case 'dev9':
+                            return ['dev9-nike-email', 'dev9-nike-web']
+                        case 'test1':
+                            return ['test1-nike-email', 'test1-nike-web']
+                        default:
+                            return []
+                    }
+                """)
+                fallbackScript('return ["No services available"]')
+            }
+        }
         choice(name: 'NAMESPACE', choices: 'manjari', description: 'Namespace of the services')
     }
 
